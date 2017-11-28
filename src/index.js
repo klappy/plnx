@@ -47,6 +47,14 @@ for (let command in config.commands) {
 
     let key = opt.key
     let secret = opt.secret
+    
+    let urls
+    if (opt.urls) {
+      urls = opt.urls
+      delete opt.urls
+    } else {
+      urls = config.urls
+    }
 
     delete opt.key
     delete opt.secret
@@ -78,7 +86,7 @@ for (let command in config.commands) {
     if (isPrivate) {
       opt.nonce = nonce()
       ropt.method = 'POST'
-      ropt.url = config.urls.private
+      ropt.url = urls.private
       ropt.form = opt
       ropt.headers.Key = key
       ropt.headers.Sign = crypto
@@ -87,7 +95,7 @@ for (let command in config.commands) {
         .digest('hex')
     } else {
       ropt.method = 'GET'
-      ropt.url = config.urls.public
+      ropt.url = urls.public
       ropt.qs = opt
     }
 
